@@ -1557,13 +1557,13 @@ p, li {
   color: white;
 }
 
-.hero-content h1 {
+.h.hero-content h1 {
   font-family: 'Playfair Display', serif;
   font-size: clamp(24px, 4vw, 48px);
   line-height: 1.15;
   font-weight: 700;
   margin-bottom: 15px;
-  white-space: normal;
+  max-width: 700px; /* adjust */
 }
 
 .hero-content p {
