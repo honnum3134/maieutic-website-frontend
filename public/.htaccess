@@ -1,0 +1,58 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # ── Legacy URL 301s ──────────────────────────────────────────────────────
+  # These MUST be RewriteRules placed above the SPA fallback, not mod_alias
+  # `Redirect` directives. Apache runs mod_rewrite first, so the fallback rule
+  # at the bottom used to swallow /career.php and serve an empty index.html
+  # before any `Redirect` could fire — which is why the old .php URLs returned
+  # a blank shell instead of redirecting.
+
+  # Old PHP site → current routes. NE preserves the #ceo fragment (without it
+  # Apache escapes the # to %23 and the anchor breaks).
+  RewriteRule ^internships\.php$ https://maieuticedutech.com/careers        [R=301,L]
+  RewriteRule ^career\.php$      https://maieuticedutech.com/careers        [R=301,L]
+  RewriteRule ^management\.php$  https://maieuticedutech.com/about-us#ceo   [R=301,L,NE]
+  RewriteRule ^about-us\.php$    https://maieuticedutech.com/about-us       [R=301,L]
+
+  # Catch-all for any other page left over from the old PHP site, so no legacy
+  # URL can ever render an empty shell. Keep AFTER the specific rules above.
+  RewriteRule \.php$             https://maieuticedutech.com/               [R=301,L]
+
+  # Renamed / retired SPA routes.
+  RewriteRule ^whoweare/?$       https://maieuticedutech.com/about-us       [R=301,L]
+  RewriteRule ^about/?$          https://maieuticedutech.com/about-us       [R=301,L]
+  RewriteRule ^team/?$           https://maieuticedutech.com/about-us       [R=301,L]
+  RewriteRule ^education/?$      https://maieuticedutech.com/               [R=301,L]
+
+  # ── SPA fallback — MUST stay last ────────────────────────────────────────
+  # Any other unknown path serves index.html; React Router then renders the
+  # real page or the in-app 404.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header set X-Powered-By "Hostinger Horizons"
+
+  # Default (index.html, redirects, sitemap, etc.): CDN caches ONE DAY,
+  # browsers always revalidate. Was s-maxage=604800, but a week of edge
+  # caching meant redirect/deploy changes kept serving stale 200 shells for
+  # days (the "fluctuating /about-us.php" the SEO scanner reported). Assets
+  # and media below override this with long lifetimes — they're safe because
+  # their filenames are content-hashed or they rarely change.
+  Header set Cache-Control "public, s-maxage=86400, max-age=0"
+
+  # Static media (not content-hashed, but rarely changes): 30 days in browser.
+  <If "%{REQUEST_URI} =~ m#\.(webp|png|jpe?g|gif|svg|ico|mp4|webm|woff2?)$#">
+    Header set Cache-Control "public, max-age=2592000"
+  </If>
+
+  # Vite build output is content-hashed (filename changes on every edit), so
+  # it can be cached forever. Keep this LAST so it wins for /assets/ images.
+  <If "%{REQUEST_URI} =~ m#^/assets/.*$#">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </If>
+</IfModule>

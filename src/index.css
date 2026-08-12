@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  body {
+    @apply text-gray-900 antialiased;
+   font-family: 'Poppins', sans-serif;
+  }
+}
+
+@layer utilities {
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+  
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+}
+
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+/* ── Toast — centred, white background ── */
+ol[class*="fixed"][class*="z-[100]"] {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: translate(-50%, -50%) !important;
+  width: auto !important;
+  max-width: 420px !important;
+  z-index: 99999 !important;
+  padding: 0 !important;
+}
+
+li[data-state="open"][class*="rounded-md"] {
+  background: #ffffff !important;
+  border: none !important;
+  border-radius: 20px !important;
+  padding: 32px 36px !important;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.25) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  min-width: 320px !important;
+}
+
+li[data-state="open"][class*="rounded-md"] div.grid {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  gap: 8px !important;
+}
+
+li[data-state="open"][class*="rounded-md"] div.text-sm.font-semibold {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.2rem !important;
+  font-weight: 700 !important;
+  color: #111827 !important;
+}
+
+li[data-state="open"][class*="rounded-md"] div.text-sm.opacity-90 {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 0.88rem !important;
+  color: #6b7280 !important;
+  line-height: 1.7 !important;
+  opacity: 1 !important;
+}

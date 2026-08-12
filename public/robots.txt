@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+# NOTE: /assets/ must stay crawlable — it holds the JS/CSS Google needs to
+# render this client-side React app. Blocking it hides every page's real
+# content and meta tags from Googlebot.
+Disallow: /Videos/
+Disallow: /hr-leads
+
+Sitemap: https://maieuticedutech.com/sitemap.xml
