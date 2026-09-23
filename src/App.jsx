@@ -41,6 +41,7 @@ const MotionGraphicsPage     = lazy(() => import('@/pages/solutions/corporate-so
 
 // ── Resources ─────────────────────────────────────────────────────────────────
 const BlogsInsightsPage      = lazy(() => import('@/pages/resources/BlogsInsightsPage'));
+const BlogPostPage           = lazy(() => import('@/pages/resources/BlogPostPage'));
 const CaseStudiesPage        = lazy(() => import('@/pages/resources/CaseStudiesPage'));
 
 // ── Our Clients ───────────────────────────────────────────────────────────────
@@ -131,6 +132,7 @@ function App() {
 
           {/* ── Resources ── */}
           <Route path="/resources/blogs-insights"                       element={<BlogsInsightsPage />} />
+          <Route path="/resources/blogs-insights/:slug"                 element={<BlogPostPage />} />
           <Route path="/resources/case-studies"                         element={<CaseStudiesPage />} />
 
           {/* ── Our Clients ── */}
