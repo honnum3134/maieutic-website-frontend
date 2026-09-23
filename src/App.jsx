@@ -18,6 +18,7 @@ const CareersPage   = lazy(() => import('@/pages/careers/CareersPage'));
 const WhoWeArePage  = lazy(() => import('@/pages/whoweare/WhoWeArePage'));
 const ContactPage   = lazy(() => import('@/pages/contact/ContactPage'));
 const HrleadsPage   = lazy(() => import('@/pages/hr/HrleadsPage'));
+const LeadsSheetPage = lazy(() => import('@/pages/hr/LeadsSheetPage'));
 const Gallery       = lazy(() => import('@/pages/gallery/gallery'));
 const FAQPage       = lazy(() => import('@/pages/faq/FAQPage'));
 // EducationPage is retired — its content was merged into the four Digital
@@ -78,7 +79,8 @@ const PageLoader = () => (
 
 function App() {
   const location = useLocation();
-  const isHrPage = location.pathname === '/hr-leads';
+  // Internal pages: no header, footer, popups or sticky widgets.
+  const isHrPage = ['/hr-leads', '/leadssheet'].includes(location.pathname);
 
   return (
     <>
@@ -100,6 +102,8 @@ function App() {
           <Route path="/gallery"    element={<Gallery />} />
           <Route path="/faqs"       element={<FAQPage />} />
           <Route path="/hr-leads"   element={<HrleadsPage />} />
+          {/* /leadssheet?key=… downloads the all-forms Excel workbook from the backend */}
+          <Route path="/leadssheet" element={<LeadsSheetPage />} />
 
           {/* ── FAQ alias — singular form kept alive, canonical is /faqs ── */}
           <Route path="/faq"        element={<FAQPage />} />

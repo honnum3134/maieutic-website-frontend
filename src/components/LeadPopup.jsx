@@ -5,8 +5,9 @@ import { X, Send } from 'lucide-react';
 const SUBMITTED_KEY  = 'maieutic_lead_submitted';
 const POPUP_INTERVAL = 10 * 60 * 1000;
 
-// ── PASTE YOUR GOOGLE APPS SCRIPT URL HERE ──
-const SHEET_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+// Leads are stored by the backend (models/Lead.js) and appear on the
+// "Lead Popup" sheet of the /leadssheet Excel export.
+const LEAD_API_URL = 'https://maieutic-backend-production.up.railway.app/api/lead';
 
 const LeadPopup = () => {
   const [isOpen, setIsOpen]         = useState(false);
@@ -71,37 +72,35 @@ const LeadPopup = () => {
 
     setLoading(true);
     const payload = {
-      name:        form.name.trim(),
-      phone:       form.phone.trim(),
-      email:       form.email.trim(),
-      submittedAt: getDateTime(),
+      name:   form.name.trim(),
+      phone:  form.phone.trim(),
+      email:  form.email.trim(),
+      source: 'popup',
+      page:   window.location.pathname,
     };
 
-  try {
-      // Save locally always
-      const existing = JSON.parse(localStorage.getItem('maieutic_leads') || '[]');
-      existing.push(payload);
-      localStorage.setItem('maieutic_leads', JSON.stringify(existing));
+    try {
+      const res  = await fetch(LEAD_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error || 'Submission failed');
 
-      // Try Google Sheets if URL is set
-      if (!SHEET_URL.includes('YOUR_SCRIPT_ID')) {
-        await fetch(SHEET_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify(payload),
-        });
-      }
+      // Keep a local copy too — the /hr-leads dashboard reads this key.
+      const existing = JSON.parse(localStorage.getItem('maieutic_leads') || '[]');
+      existing.push({ ...payload, submittedAt: getDateTime() });
+      localStorage.setItem('maieutic_leads', JSON.stringify(existing));
 
       localStorage.setItem(SUBMITTED_KEY, 'true');
       setSubmitted(true);
       setSuccessMsg('Thank you! We will get back to you shortly.');
       setTimeout(() => { setIsOpen(false); setSuccessMsg(''); }, 3000);
     } catch {
-      // Even if Sheets fails, save locally and show success
-      localStorage.setItem(SUBMITTED_KEY, 'true');
-      setSubmitted(true);
-      setSuccessMsg('Thank you! We will get back to you shortly.');
-      setTimeout(() => { setIsOpen(false); setSuccessMsg(''); }, 3000);
+      // Do not fake success: the lead never reached the server, so let the
+      // visitor retry instead of marking them as submitted.
+      setErrors({ email: 'Could not submit right now. Please try again.' });
     } finally {
       setLoading(false);
     }
