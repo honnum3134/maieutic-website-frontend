@@ -26,7 +26,7 @@ const BlogsInsightsPage = () => {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Blog',
-    name: 'Maieutic Edutech — Blogs & Insights',
+    name: 'Maieutic Edutech — Blogs',
     url: `${SITE_URL}${BLOG_BASE}`,
     publisher: { '@type': 'Organization', name: 'Maieutic Edutech Private Limited', url: SITE_URL },
     blogPost: sortedBlogs.map((b) => ({
@@ -42,10 +42,10 @@ const BlogsInsightsPage = () => {
   return (
     <>
       <Helmet>
-        <title>Blogs & Insights | Maieutic Edutech</title>
+        <title>Blogs | Maieutic Edutech</title>
         <meta
           name="description"
-          content="Perspectives on instructional design, LMS deployment, corporate learning, video production, and ed-tech marketing from the Maieutic Edutech team."
+          content="Practical, field-tested articles on online programme design, LMS deployment, corporate learning, video production, and education marketing from the Maieutic Edutech team."
         />
         <link rel="canonical" href={`${SITE_URL}${BLOG_BASE}`} />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
@@ -66,24 +66,40 @@ const BlogsInsightsPage = () => {
               fontFamily: 'Poppins, sans-serif', fontSize: '12px', fontWeight: '600', letterSpacing: '0.12em',
               textTransform: 'uppercase', color: '#FEF1DE', marginBottom: '16px',
             }}>
-              Resources
+              Ideas from the Maieutic team
             </motion.p>
             <motion.h1 variants={fadeUp} initial="hidden" animate="visible" custom={1} style={{
               fontFamily: "'Playfair Display', serif", fontSize: 'clamp(2rem, 5vw, 3.25rem)', fontWeight: '700',
               color: '#ffffff', lineHeight: 1.2, marginBottom: '24px',
             }}>
-              Blogs &amp; Insights
+              Blogs
             </motion.h1>
             <motion.p variants={fadeUp} initial="hidden" animate="visible" custom={2} style={{
               fontFamily: 'Poppins, sans-serif', fontSize: '1.05rem', color: 'rgba(255,255,255,0.88)', lineHeight: 1.75, maxWidth: '700px',
             }}>
-              Perspectives on instructional design, academic delivery, corporate learning, and ed-tech — written by the people doing the work.
+              Practical, field-tested writing on building online programmes, designing courses that hold attention, running learning platforms, and marketing education that people trust.
             </motion.p>
           </div>
         </section>
 
         {/* ── Articles ── */}
         <section style={{ padding: '64px 24px 72px', maxWidth: '1040px', margin: '0 auto' }}>
+
+          {/* Category filter */}
+          <div className="blog-filters" role="tablist" aria-label="Filter articles by category">
+            {categories.map((c) => (
+              <button
+                key={c}
+                type="button"
+                role="tab"
+                aria-selected={category === c}
+                className={`blog-filter${category === c ? ' blog-filter--active' : ''}`}
+                onClick={() => setCategory(c)}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
 
           {/* Featured / latest */}
           {showFeatured && (
@@ -108,22 +124,6 @@ const BlogsInsightsPage = () => {
               </Link>
             </motion.div>
           )}
-
-          {/* Category filter */}
-          <div className="blog-filters" role="tablist" aria-label="Filter articles by category">
-            {categories.map((c) => (
-              <button
-                key={c}
-                type="button"
-                role="tab"
-                aria-selected={category === c}
-                className={`blog-filter${category === c ? ' blog-filter--active' : ''}`}
-                onClick={() => setCategory(c)}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
 
           {/* Grid */}
           <div className="blog-grid">

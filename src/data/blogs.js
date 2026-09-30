@@ -19,13 +19,15 @@
  * Reading time is computed from the body, so it never needs updating by hand.
  */
 
+import { serviceBlogs } from './blogs-services';
+
 export const AUTHOR = {
   name: 'Maieutic Edutech Team',
   initials: 'ME',
   bio: 'Instructional designers, academic delivery specialists and learning technologists writing about what actually works in education.',
 };
 
-export const blogs = [
+const editorialBlogs = [
   /* ────────────────────────────────────────────────────────────────────── */
   {
     slug: 'the-science-of-why-traditional-studying-fails',
@@ -679,6 +681,9 @@ export const blogs = [
     ],
   },
 ];
+
+/** Editorial posts above + the service-line posts generated from the blog content pack. */
+export const blogs = [...editorialBlogs, ...serviceBlogs];
 
 /* ─── Helpers ───────────────────────────────────────────────────────────── */
 

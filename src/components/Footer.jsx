@@ -26,7 +26,7 @@ const Footer = () => {
   ];
 
   const resources = [
-    { label: 'Blogs & Insights', to: '/resources/blogs-insights' },
+    { label: 'Blogs', to: '/resources/blogs-insights' },
     { label: 'Case Studies',     to: '/resources/case-studies'   },
     { label: 'FAQs',             to: '/faqs'                     },
   ];

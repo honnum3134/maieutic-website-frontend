@@ -196,8 +196,9 @@ const BlogPostPage = () => {
   return (
     <>
       <Helmet>
-        <title>{`${post.title} | Maieutic Edutech`}</title>
+        <title>{`${post.seoTitle || post.title} | Maieutic Edutech`}</title>
         <meta name="description" content={post.excerpt} />
+        <meta name="keywords" content={post.keywords.join(', ')} />
         <link rel="canonical" href={url} />
         <meta property="og:type" content="article" />
         <meta property="og:title" content={post.title} />
@@ -251,6 +252,7 @@ const BlogPostPage = () => {
         {/* ── Cover image ── */}
         <motion.div className="blog-cover" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}>
           <img src={post.cover} alt={post.coverAlt} fetchpriority="high" />
+          {post.coverCredit && <div className="blog-cover__credit">Photo: {post.coverCredit}</div>}
         </motion.div>
 
         {/* ── Body + TOC ── */}

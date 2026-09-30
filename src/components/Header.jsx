@@ -20,7 +20,7 @@ const SEARCH_DATA = [
   { label: 'Interactive Models',           desc: 'Branching scenarios, SCORM, gamification',   href: '/solutions/interactive-models-articulate',      category: 'Solution'  },
   { label: 'Video Based Learning',         desc: 'Explainer, process & scenario-based videos', href: '/solutions/video-based-learning',               category: 'Solution'  },
   { label: '2D / 3D / Motion Graphics',    desc: 'Animation, motion design & visual storytelling', href: '/solutions/2d-3d-motion-graphics',          category: 'Solution'  },
-  { label: 'Blogs & Insights',             desc: 'Articles and perspectives from our team',    href: '/resources/blogs-insights',                     category: 'Resource'  },
+  { label: 'Blogs',                        desc: 'Articles and perspectives from our team',    href: '/resources/blogs-insights',                     category: 'Resource'  },
   { label: 'Case Studies',                 desc: 'Real outcomes from our engagements',          href: '/resources/case-studies',                       category: 'Resource'  },
   { label: 'REVA University Online',       desc: 'BCA, MBA, MCA online programmes — REVA',    href: '/contact',                                     category: 'University'},
   { label: 'PP Savani University',         desc: 'PPSU online degree programmes',              href: '/contact',                                     category: 'University'},
@@ -60,10 +60,6 @@ const SOLUTIONS_MENU = [
   },
 ];
 
-const RESOURCES_MENU = [
-  { label: 'Blogs & Insights', desc: 'Articles and perspectives from our team', href: '/resources/blogs-insights' },
-];
-
 const ABOUT_MENU = [
   { label: 'Who We Are', desc: 'Our story, mission, and what drives us',  href: '/about-us' },
   { label: 'Our Team',   desc: 'The people behind Maieutic Edutech',      href: '/about-us#ceo' },
@@ -73,7 +69,6 @@ const Header = () => {
   const [isMobileMenuOpen,    setIsMobileMenuOpen]   = useState(false);
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
   const [isSolutionsOpen,     setIsSolutionsOpen]    = useState(false);
-  const [isResourcesOpen,     setIsResourcesOpen]    = useState(false);
   const [activeSolutionTab,   setActiveSolutionTab]  = useState('digital');
   const [query,               setQuery]              = useState('');
   const [results,             setResults]            = useState([]);
@@ -82,7 +77,6 @@ const Header = () => {
 
   const dropdownRef  = useRef(null);
   const solutionsRef = useRef(null);
-  const resourcesRef = useRef(null);
   const searchRef    = useRef(null);
   const inputRef     = useRef(null);
 
@@ -93,14 +87,12 @@ const Header = () => {
     setIsMobileMenuOpen(false);
     setIsAboutDropdownOpen(false);
     setIsSolutionsOpen(false);
-    setIsResourcesOpen(false);
   }, [location.pathname]);
 
   useEffect(() => {
     const handler = (e) => {
       if (dropdownRef.current  && !dropdownRef.current.contains(e.target))  setIsAboutDropdownOpen(false);
       if (solutionsRef.current && !solutionsRef.current.contains(e.target)) setIsSolutionsOpen(false);
-      if (resourcesRef.current && !resourcesRef.current.contains(e.target)) setIsResourcesOpen(false);
       if (searchRef.current    && !searchRef.current.contains(e.target))    { setSearchOpen(false); setQuery(''); setResults([]); }
     };
     document.addEventListener('mousedown', handler);
@@ -124,7 +116,7 @@ const Header = () => {
     navigate(href);
     setSearchOpen(false); setQuery(''); setResults([]);
     setIsMobileMenuOpen(false); setIsSolutionsOpen(false);
-    setIsResourcesOpen(false); setIsAboutDropdownOpen(false);
+    setIsAboutDropdownOpen(false);
   };
 
   const handleKeyDown = (e) => {
@@ -139,7 +131,7 @@ const Header = () => {
   const isAboutActive = ABOUT_MENU.some(i => location.pathname === i.href);
   const isSolActive   = location.pathname === '/solutions'
     || SOLUTIONS_MENU.flatMap(g => g.items).some(i => location.pathname === i.href);
-  const isResActive   = RESOURCES_MENU.some(i => location.pathname === i.href);
+  const isBlogActive  = location.pathname.startsWith('/resources/blogs-insights');
   const linkColor     = (active) => active ? '#FEF1DE' : 'rgba(255,255,255,0.90)';
 
   return (
@@ -214,7 +206,7 @@ const Header = () => {
         <img src="/iso.png" alt="ISO 9001:2015 Certified" style={{ height: '56px', width: 'auto', maxHeight: '64px' }} />
       </div>
 
-      {/* ROW 2 — order: Home · About Us · Solutions · Careers · Our Clients · Resources · Gallery · FAQs · Contact Us */}
+      {/* ROW 2 — order: Home · About Us · Solutions · Careers · Our Clients · Blogs · Gallery · FAQs · Contact Us */}
       <nav style={{ backgroundColor: NAV_BAR_COLOR }}>
         <div className="px-3 sm:px-6 flex items-center justify-between h-11 min-h-[44px]">
 
@@ -300,36 +292,13 @@ const Header = () => {
               Our Clients
             </Link>
 
-            {/* 5. Resources */}
-            <div className="relative" ref={resourcesRef}>
-              <button
-                onMouseEnter={() => setIsResourcesOpen(true)}
-                onClick={() => setIsResourcesOpen(o => !o)}
-                className="flex items-center gap-1 text-sm font-medium whitespace-nowrap"
-                style={{ fontFamily: 'Poppins, sans-serif', color: linkColor(isResActive || isResourcesOpen), background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-                Resources
-                <ChevronDown size={15} style={{ transition: 'transform 0.2s', transform: isResourcesOpen ? 'rotate(180deg)' : 'rotate(0deg)' }} />
-              </button>
-              <AnimatePresence>
-                {isResourcesOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 6 }}
-                    transition={{ duration: 0.15 }}
-                    onMouseLeave={() => setIsResourcesOpen(false)}
-                    className="absolute top-full left-0 mt-1 w-60 bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden z-50">
-                    {RESOURCES_MENU.map(item => (
-                      <button key={item.label} onClick={() => goTo(item.href)}
-                        style={{ display: 'block', width: '100%', textAlign: 'left', padding: '12px 16px', border: 'none', cursor: 'pointer', backgroundColor: 'transparent', transition: 'background 0.15s' }}
-                        onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0faf9'}
-                        onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}>
-                        <div style={{ fontFamily: 'Poppins, sans-serif', fontSize: '13px', fontWeight: '500', color: '#111827', marginBottom: '2px' }}>{item.label}</div>
-                        <div style={{ fontFamily: 'Poppins, sans-serif', fontSize: '11px', color: '#6b7280' }}>{item.desc}</div>
-                      </button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            {/* 5. Blogs */}
+            <Link to="/resources/blogs-insights" className="text-sm font-medium whitespace-nowrap"
+              style={{ fontFamily: 'Poppins, sans-serif', color: linkColor(isBlogActive), textDecoration: isBlogActive ? 'underline' : 'none', textUnderlineOffset: '4px' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+              onMouseLeave={e => e.currentTarget.style.color = linkColor(isBlogActive)}>
+              Blogs
+            </Link>
 
             {/* 6. Gallery */}
             <Link to="/gallery" className="text-sm font-medium whitespace-nowrap"
@@ -477,29 +446,9 @@ const Header = () => {
                   Our Clients
                 </Link>
 
-                {/* 5. Resources */}
-                <div>
-                  <button onClick={() => setIsResourcesOpen(o => !o)}
-                    className="flex items-center gap-1 w-full text-left text-sm font-medium py-2"
-                    style={{ fontFamily: 'Poppins, sans-serif', color: linkColor(isResActive), background: 'none', border: 'none', cursor: 'pointer' }}>
-                    Resources
-                    <ChevronDown size={15} style={{ transition: 'transform 0.2s', transform: isResourcesOpen ? 'rotate(180deg)' : 'rotate(0deg)' }} />
-                  </button>
-                  <AnimatePresence>
-                    {isResourcesOpen && (
-                      <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ overflow: 'hidden', paddingLeft: '16px' }}>
-                        {RESOURCES_MENU.map(item => (
-                          <button key={item.href} onClick={() => goTo(item.href)}
-                            className="block w-full text-left py-2"
-                            style={{ fontFamily: 'Poppins, sans-serif', color: 'rgba(255,255,255,0.80)', background: 'none', border: 'none', cursor: 'pointer' }}>
-                            <div style={{ fontSize: '13px', fontWeight: '500' }}>{item.label}</div>
-                            <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.55)', marginTop: '2px' }}>{item.desc}</div>
-                          </button>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+                {/* 5. Blogs */}
+                <Link to="/resources/blogs-insights" className="text-sm font-medium py-2"
+                  style={{ fontFamily: 'Poppins, sans-serif', color: linkColor(isBlogActive) }}>Blogs</Link>
 
                 {/* 6. Gallery */}
                 <Link to="/gallery" className="text-sm font-medium py-2"
