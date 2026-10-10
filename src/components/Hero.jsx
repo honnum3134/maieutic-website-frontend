@@ -111,7 +111,7 @@ const Hero = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
-                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-white drop-shadow-md max-w-4xl"
+                className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-bold leading-tight text-white drop-shadow-md max-w-4xl"
 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 {slides[currentSlide].title}
@@ -127,7 +127,7 @@ style={{ fontFamily: "'Playfair Display', serif" }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-sm sm:text-base md:text-xl text-white/95 max-w-3xl drop-shadow-sm font-medium"
+                className="text-sm sm:text-lg md:text-2xl text-white/95 max-w-3xl drop-shadow-sm font-medium"
 style={{ fontFamily: "'Poppins', sans-serif" }}
               >
                 {slides[currentSlide].subtitle}
