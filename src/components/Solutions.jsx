@@ -16,7 +16,7 @@ const Solutions = () => {
     },
     {
       icon: Video,
-      title: 'Content people finish',
+      title: 'Creative Digital Production',
       description: 'Animation, studio video and interactive exercises, produced in-house and built to hold attention to the last minute.',
       color: '#800d07',
       borderColor: 'border-[#800d07]'
