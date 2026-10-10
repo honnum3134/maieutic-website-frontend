@@ -13,16 +13,16 @@ const Hero = () => {
   const slides = [
     {
       id: 1,
-      title: "From concept to classroom - online, blended, and beyond",
-      subtitle: "Turning complex knowledge into clear, engaging digital learning solutions",
+      title: "We build and run online degree programs for universities",
+      subtitle: "Curriculum design, content production, LMS deployment, admissions and student support from one team",
       image: "/images/A.webp",
       width: 1376,
       height: 768
     },
     {
       id: 2,
-      title: "Blending pedagogy, technology, and creativity",
-      subtitle: "We design meaningful digital learning experiences that educate, engage, and deliver impact",
+      title: "Instructional designers, developers and animators on one team",
+      subtitle: "We plan the teaching, produce the content and build the platform, so your course works end to end",
       image: "/images/D1.webp",
       width: 1536,
       height: 1024
@@ -30,15 +30,15 @@ const Hero = () => {
     {
       id: 3,
       title: "Designed for institutions. Built for learners.",
-      subtitle: "A trusted partner in building scalable, effective digital learning ecosystems",
+      subtitle: "We help universities launch online programs that grow from a first cohort to thousands of students",
       image: "/images/C1.webp",
       width: 1584,
       height: 672
     },
     {
       id: 4,
-      title: "Digital learning driven by insight and innovation",
-      subtitle: "Transforming educational vision into impactful, learner-centered digital experiences",
+      title: "Learning you can measure, from enrolment to completion",
+      subtitle: "Completion rates, assessment scores and engagement data show you what is working and what to fix",
       /* D2.webp is D1.png converted to webp (1.5MB -> 68KB) */
       image: "/images/D2.webp",
       width: 1584,
@@ -145,7 +145,7 @@ style={{ fontFamily: "'Poppins', sans-serif" }}
               onClick={() => navigate('/contact')}
               className="bg-white text-[#00615c] hover:bg-[#FEF1DE] hover:text-[#00615c] transition-all duration-300 hover:scale-105 group px-8 py-6 text-lg shadow-lg border-2 border-transparent"
             >
-              Get in Touch
+              Talk to our team
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
             </Button>
           </motion.div>

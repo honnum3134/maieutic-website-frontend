@@ -126,11 +126,11 @@ const Testimonials = () => {
    ===================================================== */
 
 const steps = [
-  { title: "Explore Solutions", icon: Search },
-  { title: "Align Vision", icon: Target },
-  { title: "Design & Produce", icon: PenTool },
-  { title: "Review & Refine", icon: RefreshCcw },
-  { title: "Deliver & Scale", icon: Rocket },
+  { title: "Tell us what you need", icon: Search },
+  { title: "Agree the scope and outcomes", icon: Target },
+  { title: "We design and produce", icon: PenTool },
+  { title: "You review, we refine", icon: RefreshCcw },
+  { title: "Launch and scale", icon: Rocket },
 ];
 
 const LearningStepper = () => {
@@ -142,7 +142,7 @@ const LearningStepper = () => {
 
         <div className="text-center mb-24">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-            Let’s Design Learning That Truly Works
+            How a project runs
           </h2>
         </div>
 
@@ -236,7 +236,7 @@ const LearningCTA = () => {
     <section className="py-24 bg-gradient-to-r from-[#eef6f5] to-[#f8efef]">
       <div className="container mx-auto px-6 text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-10">
-          Ready to transform your learning experience?
+          Planning an online program or a training rollout?
         </h2>
 
         <motion.button
@@ -245,7 +245,7 @@ const LearningCTA = () => {
           onClick={() => navigate('/contact')}
           className="inline-flex items-center justify-center px-10 py-4 rounded-full bg-[#00615c] text-white font-semibold shadow-lg hover:shadow-xl transition-all cursor-pointer"
         >
-          Contact Us Today
+          Book a call
         </motion.button>
       </div>
     </section>

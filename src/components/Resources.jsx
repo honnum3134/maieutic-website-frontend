@@ -42,10 +42,10 @@ const DiscoverUs = () => {
         >
           <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-4"
             style={{ fontFamily: "'Playfair Display', serif" }}>
-            Industries We Serve
+            Who we build for
           </h2>
           <p className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto text-center px-4">
-            Delivering tailored solutions across diverse sectors to drive innovation and growth.
+            Degree programs for universities, and customised content creation in nine sectors.
           </p>
         </motion.div>
 

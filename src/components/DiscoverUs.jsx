@@ -27,7 +27,7 @@ const Counter = ({ value }) => {
 
 const DiscoverUs = () => {
   const stats = [
-    { number: '50+', label: 'Happy Customers' },
+    { number: '50+', label: 'Institutions and companies served' },
     { number: '7500+', label: 'Content Hours' },
     { number: '98%', label: 'Satisfaction Rate' }
   ];
@@ -63,16 +63,15 @@ const DiscoverUs = () => {
                 className="text-2xl md:text-4xl font-extrabold mb-5"
 style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                Trust-First & Professional
+                Trusted by universities and enterprises
               </h2>
 
               <p
                 className="text-base md:text-xl text-white/90 leading-relaxed max-w-xl"
 style={{ fontFamily: "'Poppins', sans-serif" }}
               >
-                We are proud to collaborate with universities and enterprises
-                that entrust us with transforming their learning visions into
-                impactful digital experiences.
+                Universities and companies hand us their programs and their
+                reputation. We treat both with care.
               </p>
             </div>
 

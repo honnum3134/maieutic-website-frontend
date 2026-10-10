@@ -9,22 +9,22 @@ const Solutions = () => {
   const solutions = [
     {
       icon: BookOpen,
-      title: 'Pedagogy-First Design',
-      description: 'Learning grounded in instructional science to ensure deep comprehension and retention.',
+      title: 'Teaching comes first',
+      description: 'Every module starts from what the learner must be able to do, then we choose the format that teaches it best.',
       color: '#00615c',
       borderColor: 'border-[#00615c]'
     },
     {
       icon: Video,
-      title: 'Creative Digital Production',
-      description: 'Engaging animation, high-quality video production, and interactive content that captivates learners.',
+      title: 'Content people finish',
+      description: 'Animation, studio video and interactive exercises, produced in-house and built to hold attention to the last minute.',
       color: '#800d07',
       borderColor: 'border-[#800d07]'
     },
     {
       icon: TrendingUp,
-      title: 'Scalable Learning Solutions',
-      description: 'Robust frameworks built for institutions & enterprises. Tailored for digital learning development & designed to grow with your organization.',
+      title: 'Built to grow with you',
+      description: 'Start with one course or a full degree. The same structure carries you from a first cohort to thousands of learners.',
       color: '#00615c',
       borderColor: 'border-[#00615c]'
     }
@@ -51,13 +51,13 @@ const Solutions = () => {
             className="text-4xl md:text-5xl font-bold text-[#00615c] mb-4"
            style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Our Philosophy
+            How we work
           </h2>
           <p
             className="text-sm text-gray-700 max-w-3xl mx-auto"
             style={{ fontFamily: "'Poppins', sans-serif" }}
           >
-            Comprehensive educational technology solutions designed to transform learning experiences across all levels and industries.
+            Three principles shape every course we build, for a university or a corporate training team.
           </p>
         </motion.div>
 
