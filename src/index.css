@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,600;1,700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -87,3 +87,5 @@ li[data-state="open"][class*="rounded-md"] div.text-sm.opacity-90 {
   line-height: 1.7 !important;
   opacity: 1 !important;
 }
+/* Hero headline: the global heading rule above forces a fixed line-height; the hero needs proportional leading */
+#home h1 { line-height: 1.15 !important; }
