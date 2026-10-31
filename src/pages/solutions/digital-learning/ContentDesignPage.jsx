@@ -72,7 +72,7 @@ const ContentDesignPage = () => {
           <div style={{ maxWidth: '860px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
             <motion.p variants={fadeUp} initial="hidden" animate="visible" custom={0}
               style={{ fontFamily: 'Poppins, sans-serif', fontSize: '12px', fontWeight: '600', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#FEF1DE', marginBottom: '16px' }}>
-              Digital Learning Solutions
+              University Offerings
             </motion.p>
             <motion.h1 variants={fadeUp} initial="hidden" animate="visible" custom={1}
               style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(2rem, 5vw, 3.25rem)', fontWeight: '700', color: '#ffffff', lineHeight: 1.2, marginBottom: '24px' }}>

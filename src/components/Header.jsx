@@ -41,7 +41,7 @@ const CATEGORY_COLORS = {
 const SOLUTIONS_MENU = [
   {
     id: 'digital',
-    label: 'Digital Learning',
+    label: 'University Offerings',
     items: [
       { label: 'Content Design & Development',          desc: 'Instructional design & curriculum architecture', href: '/solutions/content-design-development'        },
       { label: 'LMS Deployment & Management',           desc: 'LMS setup and management',    href: '/solutions/lms-deployment-management'         },

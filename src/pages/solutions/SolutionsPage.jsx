@@ -18,7 +18,7 @@ const FAMILIES = [
   {
     id: 'digital',
     eyebrow: 'For Universities & Institutions',
-    title: 'Digital Learning',
+    title: 'University Offerings',
     intro: 'End-to-end support for online degree programmes — from the first storyboard to the analytics dashboard.',
     accent: '#00615c',
     tint: '#f0faf9',

@@ -17,9 +17,7 @@ const Footer = () => {
 
   const company = [
     { label: 'Who We Are',  to: '/about-us' },
-    { label: 'Our Vision',  to: '/about-us' },
-    { label: 'Our Mission', to: '/about-us' },
-    { label: 'Our Impact',  to: '/about-us' },
+    { label: 'Our Team',    to: '/about-us#ceo' },
     { label: 'Our Clients', to: '/clients'  },
     { label: 'Careers',     to: '/careers'  },
     { label: 'Gallery',     to: '/gallery'  },

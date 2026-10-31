@@ -1,11 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
-const EnquireNow = () => {
+// Other components (the homepage hero) open the form by dispatching this event.
+const OPEN_EVENT = 'maieutic:open-enquiry';
+export const openEnquiry = () => window.dispatchEvent(new CustomEvent(OPEN_EVENT));
+
+// showTab: always show the side tab. revealAfter: a section id — show the tab only
+// once the viewer has scrolled past that section (the homepage hero has its own button).
+const EnquireNow = ({ showTab = true, revealAfter = null }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const open = () => setIsOpen(true);
+    window.addEventListener(OPEN_EVENT, open);
+    return () => window.removeEventListener(OPEN_EVENT, open);
+  }, []);
+
+  useEffect(() => {
+    if (!revealAfter) return undefined;
+    const check = () => {
+      const el = document.getElementById(revealAfter);
+      const limit = el ? el.offsetTop + el.offsetHeight - 120 : 400;
+      setPastHero(window.scrollY > limit);
+    };
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+    window.addEventListener('resize', check);
+    return () => { window.removeEventListener('scroll', check); window.removeEventListener('resize', check); };
+  }, [revealAfter]);
+
+  const tabVisible = revealAfter ? pastHero : showTab;
   const [formData, setFormData] = useState({
     name: '', email: '', phone: '', course: '', message: ''
   });
@@ -48,9 +76,10 @@ const handleSubmit = async (e) => {
 
   return (
     <>
-      {/* ── STICKY VERTICAL BUTTON ── */}
-      <div
+      {/* ── STICKY VERTICAL BUTTON (on the homepage it slides in once the hero is scrolled past) ── */}
+      {(showTab || revealAfter) && <div
         onClick={() => setIsOpen(true)}
+        aria-hidden={!tabVisible}
         style={{
           position: 'fixed',
           right: 0,
@@ -58,7 +87,9 @@ const handleSubmit = async (e) => {
           zIndex: 999,
           writingMode: 'vertical-rl',
           textOrientation: 'mixed',
-          transform: 'rotate(180deg)',
+          transform: tabVisible ? 'rotate(180deg) translateX(0)' : 'rotate(180deg) translateX(-110%)',
+          opacity: tabVisible ? 1 : 0,
+          pointerEvents: tabVisible ? 'auto' : 'none',
           background: '#800d07',
           color: '#ffffff',
           padding: '18px 10px',
@@ -70,13 +101,13 @@ const handleSubmit = async (e) => {
           cursor: 'pointer',
           boxShadow: '-4px 0 16px rgba(128,13,7,0.35)',
           userSelect: 'none',
-          transition: 'background 0.2s, padding 0.2s',
+          transition: 'background 0.2s, padding 0.2s, transform 0.45s cubic-bezier(.22,1,.36,1), opacity 0.35s',
         }}
         onMouseEnter={e => { e.currentTarget.style.background = '#a01109'; e.currentTarget.style.paddingRight = '14px'; }}
         onMouseLeave={e => { e.currentTarget.style.background = '#800d07'; e.currentTarget.style.paddingRight = '10px'; }}
       >
         ENQUIRE NOW
-      </div>
+      </div>}
 
       {/* ── MODAL OVERLAY ── */}
       <AnimatePresence>

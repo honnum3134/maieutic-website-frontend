@@ -1,7 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useAnimationFrame, useInView, useReducedMotion } from 'framer-motion';
-import { ArrowRight, GraduationCap, Briefcase } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { GraduationCap, Briefcase, Maximize2, MessageSquareText } from 'lucide-react';
+import HeroWorkModal from './HeroWorkModal';
+import { openEnquiry } from './EnquireNow';
+import { companyStats } from '@/data/stats';
 
 /* ---------- Copy from the content sheet. `accent` is the phrase set in italic teal. ---------- */
 const slides = [
@@ -12,11 +14,7 @@ const slides = [
 ];
 const SLIDE_MS = 6000;
 
-const stats = [
-  { value: 50,   suffix: '+', label: 'universities & companies' },
-  { value: 7500, suffix: '+', label: 'hours of content' },
-  { value: 98,   suffix: '%', label: 'client satisfaction' },
-];
+const stats = companyStats;
 
 const EASE = [0.22, 1, 0.36, 1];
 const clamp01 = (v) => Math.max(0, Math.min(1, v));
@@ -115,21 +113,6 @@ const T = {
   bars: 8.1, barsEach: 0.35, barLen: 1.3,
   cap: 9.8,
   fade: 10.6,
-};
-const phaseOf = (t) => (t < T.rec ? 0 : t < T.lms ? 1 : t < T.bars ? 2 : 3);
-
-const PHASES = [
-  'Universities and enterprises share their programs and goals',
-  'Our studio scripts, films and animates every lesson',
-  'The LMS goes live with content, assessments and analytics',
-  'Learners move from first login to completion',
-];
-const STATIONS = {
-  university: 'Universities bring us degree programs and curricula',
-  enterprise: 'Enterprises bring us training goals and their teams',
-  studio:     'Instructional designers, video and animation teams',
-  lms:        'LMS deployment, assessments, analytics and support',
-  learners:   'Thousands of learners, from enrolment to completion',
 };
 
 /* Dashed route with a signal that travels when p is 0..1 */
@@ -262,7 +245,39 @@ const EnterpriseBuilding = ({ E, lit, reduced, loop }) => {
   );
 };
 
-const Scene = ({ hint }) => {
+/* Opens the site-wide enquiry form; replaces the sticky side tab on the homepage */
+const EnquireButton = () => {
+  const reduced = useReducedMotion();
+  return (
+    <motion.button
+      type="button"
+      onClick={openEnquiry}
+      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 1.4 }}
+      whileHover={{ y: -3, boxShadow: '0 22px 40px -14px rgba(128,13,7,0.6)' }}
+      whileTap={{ scale: 0.97 }}
+      className="group relative inline-flex shrink-0 items-center gap-3.5 overflow-hidden rounded-full bg-[#800d07] py-2 pl-2 pr-7 text-left text-white shadow-xl shadow-[#800d07]/30 transition-colors hover:bg-[#6a0b06]"
+      style={{ fontFamily: "'Poppins', sans-serif" }}
+    >
+      {/* a soft band of light sweeps across every few seconds */}
+      {!reduced && (
+        <motion.span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+          initial={{ left: '-40%' }}
+          animate={{ left: ['-40%', '140%'] }}
+          transition={{ duration: 1.1, ease: 'easeInOut', repeat: Infinity, repeatDelay: 3.6, delay: 2.4 }}
+        />
+      )}
+      {/* cream badge, like the header's Call Us button */}
+      <span className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#FEF1DE] text-[#800d07] transition-transform group-hover:rotate-[-8deg] group-hover:scale-105">
+        <MessageSquareText className="h-5 w-5" strokeWidth={2.1} />
+      </span>
+      <span className="relative text-[16px] font-bold">Enquire now</span>
+    </motion.button>
+  );
+};
+
+const Scene = ({ hint, cta }) => {
   const ref = useRef(null);
   const inView = useInView(ref, { amount: 0.2 });
   const reduced = useReducedMotion();
@@ -292,9 +307,6 @@ const Scene = ({ hint }) => {
   const progress = [0, 1, 2].map((i) => (fading ? 0 : easeOut(seg(t, T.bars + i * T.barsEach, T.barLen))));
   const avg = (progress[0] + progress[1] + progress[2]) / 3;
   const capP = fading ? 0 : seg(t, T.cap, 1.2);
-  const phase = t < 0 ? 0 : phaseOf(t);
-  const caption = focus ? STATIONS[focus] : PHASES[phase];
-  const captionKey = focus || `p${phase}`;
   const loop = reduced ? undefined : Infinity;
 
   const U = { x: -170, y: -60 };   // university (back-left)
@@ -309,7 +321,9 @@ const Scene = ({ hint }) => {
   const pr = presenter(S.x + 26, S.y + 40, 46);
 
   return (
-    <div ref={ref} className="w-full">
+    <div ref={ref} className="relative w-full">
+      {/* desktop: the enquiry button sits in the empty corner below the platform's left edge */}
+      {cta && <div className="absolute bottom-[calc(12%-80px)] left-[calc(5%+10px)] z-10 hidden lg:block">{cta}</div>}
       <svg viewBox="130 70 560 400" className="w-full h-auto overflow-visible" role="img" aria-label="How Maieutic connects universities, a content studio, the learning platform and learners">
         <defs>
           <radialGradient id="mx-ground" cx="50%" cy="50%" r="50%">
@@ -458,24 +472,8 @@ const Scene = ({ hint }) => {
         </motion.g>
       </svg>
 
-      {/* one line that follows the story, or the station under the cursor */}
-      <div className="mt-2 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 min-h-[24px] px-2 text-center" style={{ fontFamily: "'Poppins', sans-serif" }}>
-        <span className="flex items-center gap-1 shrink-0">
-          {PHASES.map((_, i) => (
-            <span key={i} className="h-1 rounded-full transition-all duration-500" style={{ width: i === phase ? 16 : 5, background: i === phase ? '#00615c' : '#cfd8d6' }} />
-          ))}
-        </span>
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.span
-            key={captionKey}
-            initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.3 }}
-            className="text-[12px] text-gray-500"
-          >
-            {caption}
-          </motion.span>
-        </AnimatePresence>
-      </div>
+      {/* phones and tablets: the enquiry button sits under the scene instead */}
+      {cta && <div className="mt-6 flex justify-center px-2 lg:hidden">{cta}</div>}
     </div>
   );
 };
@@ -484,6 +482,8 @@ const Scene = ({ hint }) => {
 const Hero = () => {
   const [current, setCurrent] = useState(0);
   const [hint, setHint] = useState(null); // which client the scene should show while a button is hovered
+  const [openWork, setOpenWork] = useState(null); // 'university' | 'enterprise' | null: which work popup is open
+  const closeWork = useCallback(() => setOpenWork(null), []);
   useEffect(() => {
     const id = setInterval(() => setCurrent((c) => (c + 1) % slides.length), SLIDE_MS);
     return () => clearInterval(id);
@@ -495,18 +495,17 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className="relative overflow-hidden pt-32 pb-14 lg:pt-36 lg:pb-16 bg-gradient-to-b from-white via-[#FEF1DE]/40 to-white">
-      <div className="pointer-events-none absolute -top-48 right-[-10%] w-[720px] h-[720px] rounded-full bg-[#00615c]/[0.08] blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-40 -left-32 w-[480px] h-[480px] rounded-full bg-[#800d07]/[0.06] blur-3xl" />
-      <div
-        className="pointer-events-none absolute inset-0 opacity-60"
-        style={{
-          backgroundImage: 'radial-gradient(rgba(0,97,92,0.14) 1px, transparent 1px)',
-          backgroundSize: '26px 26px',
-          maskImage: 'radial-gradient(ellipse at 72% 50%, black 15%, transparent 65%)',
-          WebkitMaskImage: 'radial-gradient(ellipse at 72% 50%, black 15%, transparent 65%)',
-        }}
-      />
+    <section id="home" className="relative overflow-hidden pt-32 pb-14 lg:pt-36 lg:pb-16 bg-[#f8f4ec]">
+      {/* one soft light from the top centre, fading evenly to both sides */}
+      <div className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 70% at 50% -10%, rgba(0,97,92,0.13) 0%, rgba(0,97,92,0.05) 45%, transparent 75%)' }} />
+      {/* faint rings centred on the scene, wide enough to pass behind the headline */}
+      <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        {[300, 440, 580, 720].map((r, i) => (
+          <circle key={r} cx="1010" cy="400" r={r} fill="none" stroke="#00615c" strokeOpacity={0.09 - i * 0.015} strokeWidth="1.2" />
+        ))}
+      </svg>
+      {/* settles into the page colour at the bottom edge */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-white" />
 
       <div className="relative w-full px-6 lg:max-w-7xl lg:mx-auto">
         <div className="grid lg:grid-cols-12 gap-10 lg:gap-6 items-center">
@@ -551,42 +550,48 @@ const Hero = () => {
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 }}
               className="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-3"
             >
-              <Link
-                to="/contact"
+              <button
+                type="button"
+                onClick={() => setOpenWork('university')}
                 onMouseEnter={() => setHint('university')} onMouseLeave={() => setHint(null)}
                 className="group inline-flex items-center gap-2.5 rounded-full bg-[#00615c] px-6 py-3.5 text-[15px] font-semibold text-white shadow-lg shadow-[#00615c]/25 transition-transform hover:-translate-y-0.5"
                 style={{ fontFamily: "'Poppins', sans-serif" }}
               >
                 <GraduationCap className="w-[18px] h-[18px]" strokeWidth={2.1} />
                 For universities
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link
-                to="/clients"
+                <Maximize2 className="ml-0.5 h-4 w-4 opacity-80 transition-transform group-hover:scale-125 group-hover:opacity-100" strokeWidth={2.2} />
+              </button>
+              <button
+                type="button"
+                onClick={() => setOpenWork('enterprise')}
                 onMouseEnter={() => setHint('enterprise')} onMouseLeave={() => setHint(null)}
                 className="group inline-flex items-center gap-2.5 rounded-full border border-gray-300 bg-white px-6 py-3.5 text-[15px] font-semibold text-gray-800 hover:border-[#800d07] hover:text-[#800d07] transition-colors"
                 style={{ fontFamily: "'Poppins', sans-serif" }}
               >
                 <Briefcase className="w-[18px] h-[18px]" strokeWidth={2.1} />
                 For enterprises
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
+                <Maximize2 className="ml-0.5 h-4 w-4 opacity-70 transition-transform group-hover:scale-125 group-hover:opacity-100" strokeWidth={2.2} />
+              </button>
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.9 }}
-              className="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-x-7 gap-y-3"
+              initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.9, ease: EASE }}
+              className="mt-9 flex flex-wrap sm:flex-nowrap items-center justify-center lg:justify-start gap-x-6 gap-y-5"
             >
               {stats.map((s, i) => (
-                <div key={s.label} className="flex items-center gap-7">
-                  <div style={{ fontFamily: "'Poppins', sans-serif" }}>
-                    <div className="text-xl font-bold text-gray-900 leading-none tabular-nums" style={{ fontFamily: "'Playfair Display', serif" }}>
+                <React.Fragment key={s.label}>
+                  <div className="text-center lg:text-left" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                    <div
+                      className="inline-block text-[2rem] sm:text-[2.25rem] font-bold leading-none tabular-nums text-transparent bg-clip-text bg-gradient-to-r from-[#00615c] via-[#2f6b5e] to-[#800d07] pb-1 -mb-1"
+                      style={{ fontFamily: "'Playfair Display', serif" }}
+                    >
                       <Counter value={s.value} suffix={s.suffix} delay={0.9 + i * 0.15} />
                     </div>
-                    <div className="mt-1 text-[11px] text-gray-500">{s.label}</div>
+                    <span className="mt-2 mx-auto lg:mx-0 block h-[2px] w-7 rounded-full bg-gradient-to-r from-[#00615c] to-[#800d07]" />
+                    <div className="mt-2 text-[12.5px] font-medium text-gray-600 whitespace-nowrap">{s.label}</div>
                   </div>
-                  {i < stats.length - 1 && <span className="hidden sm:block w-px h-8 bg-gray-300" />}
-                </div>
+                  {i < stats.length - 1 && <span className="hidden sm:block w-px h-12 bg-gray-300" />}
+                </React.Fragment>
               ))}
             </motion.div>
 
@@ -610,7 +615,7 @@ const Hero = () => {
 
           {/* Right: the scene */}
           <div className="lg:col-span-6">
-            <Scene hint={hint} />
+            <Scene hint={hint} cta={<EnquireButton />} />
           </div>
         </div>
       </div>
@@ -629,6 +634,8 @@ const Hero = () => {
           <motion.span animate={{ y: ['-100%', '100%'] }} transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }} className="absolute inset-x-0 h-full bg-[#00615c]" />
         </span>
       </motion.button>
+
+      <HeroWorkModal kind={openWork} onClose={closeWork} />
     </section>
   );
 };

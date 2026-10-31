@@ -4,8 +4,6 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
 import EnquireNow from '@/components/EnquireNow';
-import ApplyNow from '@/components/ApplyNow';
-import LeadPopup from '@/components/LeadPopup';
 import WhatsappButton from '@/components/WhatsappButton';
 import { Toaster } from '@/components/ui/toaster';
 // The homepage is loaded eagerly — it is the landing page, and putting it
@@ -82,6 +80,9 @@ function App() {
   const location = useLocation();
   // Internal pages: no header, footer, popups or sticky widgets.
   const isHrPage = ['/hr-leads', '/leadssheet'].includes(location.pathname);
+  // The homepage hero has its own Enquire button, so there the sticky side tab
+  // only appears once the viewer has scrolled past the hero section.
+  const isHome = location.pathname === '/';
 
   return (
     <>
@@ -144,9 +145,7 @@ function App() {
         </Routes>
       </Suspense>
       {!isHrPage && <Footer />}
-      {!isHrPage && <EnquireNow />}
-      {!isHrPage && <ApplyNow />}
-      {!isHrPage && <LeadPopup />}
+      {!isHrPage && <EnquireNow showTab={!isHome} revealAfter={isHome ? 'home' : null} />}
       {!isHrPage && <WhatsappButton />}
       <Toaster />
     </>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
+import { companyStats } from '@/data/stats';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -242,37 +243,38 @@ function ClientsPage() {
       <div style={{ paddingTop: 'clamp(96px, 10vw, 116px)', background: '#f8fafb', minHeight: '100vh', fontFamily: "'Poppins', sans-serif" }}>
 
         {/* HERO */}
-        <div style={{
-          background: 'linear-gradient(135deg, #00615c 0%, #004d49 60%, #800d07 100%)',
-          padding: 'clamp(48px, 6vw, 80px) clamp(20px, 6vw, 80px)',
-          textAlign: 'center', position: 'relative', overflow: 'hidden',
-        }}>
-          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at top right, rgba(255,255,255,0.07) 0%, transparent 60%)', pointerEvents: 'none' }} />
-          <motion.p variants={fadeUp} initial="hidden" animate="visible" custom={0}
-            style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '4px', color: '#FEF1DE', textTransform: 'uppercase', marginBottom: '14px' }}>
-            Trusted By
-          </motion.p>
-          <motion.h1 variants={fadeUp} initial="hidden" animate="visible" custom={1}
-            style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(28px, 5vw, 56px)', fontWeight: 700, color: '#ffffff', marginBottom: '16px', lineHeight: 1.15 }}>
-            Our Clients
-          </motion.h1>
-          <motion.p variants={fadeUp} initial="hidden" animate="visible" custom={2}
-            style={{ fontSize: 'clamp(14px, 1.5vw, 18px)', color: 'rgba(255,255,255,0.78)', maxWidth: '620px', margin: '0 auto', lineHeight: 1.7, fontWeight: 300 }}>
-            From leading universities and ed-tech platforms to global enterprises - organisations that trust Maieutic to deliver learning that works.
-          </motion.p>
-          <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={3}
-            style={{ display: 'flex', justifyContent: 'center', gap: '48px', flexWrap: 'wrap', marginTop: '48px' }}>
-            {[
-              { value: '24', label: 'Education Clients' },
-              { value: '20', label: 'Corporate Clients' },
-              { value: '44+', label: 'Total Partners'   },
-            ].map((s, i) => (
-              <div key={i} style={{ textAlign: 'center' }}>
-                <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '2.2rem', fontWeight: '700', color: '#ffffff' }}>{s.value}</div>
-                <div style={{ fontFamily: 'Poppins, sans-serif', fontSize: '11px', color: 'rgba(255,255,255,0.65)', marginTop: '4px', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{s.label}</div>
-              </div>
-            ))}
-          </motion.div>
+        <div style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(56px, 7vw, 96px) clamp(20px, 5vw, 64px)' }}>
+          {/* full-width photo with the brand tint over it, as on the Enterprise and Careers pages */}
+          <img src="/images/teams.jpg" alt="" aria-hidden="true"
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 40%' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(100deg, rgba(0,77,73,0.94) 0%, rgba(0,97,92,0.84) 45%, rgba(74,10,6,0.72) 100%)' }} />
+
+          <div style={{ position: 'relative', maxWidth: '1280px', margin: '0 auto' }}>
+            <motion.p variants={fadeUp} initial="hidden" animate="visible" custom={0}
+              style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '4px', color: '#FEF1DE', textTransform: 'uppercase', marginBottom: '14px' }}>
+              Trusted By
+            </motion.p>
+            <motion.h1 variants={fadeUp} initial="hidden" animate="visible" custom={1}
+              style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(30px, 5vw, 58px)', fontWeight: 700, color: '#ffffff', marginBottom: '16px', lineHeight: 1.15 }}>
+              Our Clients
+            </motion.h1>
+            <motion.p variants={fadeUp} initial="hidden" animate="visible" custom={2}
+              style={{ fontSize: 'clamp(14px, 1.5vw, 18px)', color: 'rgba(255,255,255,0.82)', maxWidth: '560px', lineHeight: 1.7, fontWeight: 300 }}>
+              From leading universities and ed-tech platforms to global enterprises - organisations that trust Maieutic to deliver learning that works.
+            </motion.p>
+
+            <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={3}
+              style={{ display: 'flex', flexWrap: 'wrap', gap: '20px 48px', marginTop: '40px' }}>
+              {companyStats.map((s, i) => (
+                <div key={i} style={{ paddingLeft: '16px', borderLeft: '2px solid rgba(254,241,222,0.4)' }}>
+                  <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.9rem, 2.8vw, 2.5rem)', fontWeight: '700', color: '#ffffff', lineHeight: 1 }}>
+                    {s.value.toLocaleString('en-IN')}<span style={{ color: '#FEF1DE' }}>{s.suffix}</span>
+                  </div>
+                  <div style={{ fontFamily: 'Poppins, sans-serif', fontSize: '11px', color: 'rgba(255,255,255,0.72)', marginTop: '7px', letterSpacing: '0.06em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>{s.label}</div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
         </div>
 
         {/* TAB SWITCHER */}

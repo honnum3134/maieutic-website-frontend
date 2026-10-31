@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { Mail, Phone, Clock, MapPin, Send } from 'lucide-react';
+import { offeringGroups } from '@/data/offerings';
 
 const GMAPS_LINK = "https://www.google.com/maps/place/Maieutic+Edutech+Pvt+Ltd,+E-learning+Content+Development,+Video+based+Content+Development,+Animation+Services/@12.9116024,77.5135233,17z";
 
@@ -333,29 +334,37 @@ color: '#00615c', marginBottom: '8px',
                     ))}
                   </div>
 
-                  {/* Subject */}
+                  {/* What do you need? — a dropdown of our offerings, sent as the subject */}
                   <div>
-                    <label style={{
+                    <label htmlFor="contact-subject" style={{
                       display: 'block', fontFamily: 'Arial, sans-serif',
                       fontSize: '12px', fontWeight: 700, color: '#00615c',
                       marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px',
                     }}>
-                      Subject
+                      What can we help you with? <span style={{ color: '#800d07' }}>*</span>
                     </label>
-                    <input
-                      type="text" name="subject"
+                    <select
+                      id="contact-subject" name="subject" required
                       value={formData.subject} onChange={handleChange}
-                      placeholder="How can we help you?"
                       style={{
-                        width: '100%', padding: '12px 14px',
+                        width: '100%', padding: '12px 42px 12px 14px',
                         border: '2px solid #e8e8e8', borderRadius: '8px',
                         fontFamily: 'Arial, sans-serif', fontSize: '14px',
-                        color: '#333', outline: 'none', background: '#fafafa',
-                        transition: 'border-color 0.2s, background 0.2s',
+                        color: formData.subject ? '#333' : '#8a8a8a', outline: 'none',
+                        background: `#fafafa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2300615c' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center`,
+                        appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none',
+                        cursor: 'pointer', transition: 'border-color 0.2s',
                       }}
-                      onFocus={e => { e.target.style.borderColor = '#00615c'; e.target.style.background = '#fff'; }}
-                      onBlur={e => { e.target.style.borderColor = '#e8e8e8'; e.target.style.background = '#fafafa'; }}
-                    />
+                      onFocus={e => { e.target.style.borderColor = '#00615c'; }}
+                      onBlur={e => { e.target.style.borderColor = '#e8e8e8'; }}
+                    >
+                      <option value="" disabled>Select a service</option>
+                      {offeringGroups.map((g) => (
+                        <optgroup key={g.label} label={g.label}>
+                          {g.items.map((item) => <option key={item} value={item}>{item}</option>)}
+                        </optgroup>
+                      ))}
+                    </select>
                   </div>
 
                   {/* Message */}
